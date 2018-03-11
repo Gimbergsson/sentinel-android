@@ -381,10 +381,8 @@ public class APIFactory	{
         JSONObject jsonObject  = null;
 
         try {
-            StringBuilder url = new StringBuilder(Web.BITCOIND_FEE_URL);
-//            Log.i("APIFactory", "Dynamic fees:" + url.toString());
-            String response = Web.getURL(url.toString());
-//            Log.i("APIFactory", "Dynamic fees response:" + response);
+            String response = Web.getURL(Web.BITCOIND_FEE_URL);
+            // Log.i("APIFactory", "Dynamic fees:"+ Web.BITCOIND_FEE_URL +"\nDynamic fees response:"+ response);
             try {
                 jsonObject = new JSONObject(response);
                 parseDynamicFees_bitcoind(jsonObject);
