@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.samourai.sentinel"
         minSdkVersion 21
-        targetSdkVersion 21
+        targetSdkVersion 27
         versionCode 32
         versionName "2.7.1"
         multiDexEnabled true
@@ -39,19 +39,42 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:multidex:1.0.0'
-    compile 'com.baoyz.swipemenulistview:library:1.2.1'
-    compile 'com.neovisionaries:nv-websocket-client:1.9'
-    compile 'commons-codec:commons-codec:1.4'
-    compile 'commons-io:commons-io:2.5'
-    compile 'com.google.guava:guava:16.0.1'
-    compile 'org.apache.commons:commons-lang3:3.3'
-    compile 'org.bouncycastle:bcprov-jdk15on:1.55'
-    compile 'com.lambdaworks:scrypt:1.4.0'
-    compile 'net.i2p.android.ext:floatingactionbutton:1.9.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile('com.google.zxing:core:3.3.0') {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:multidex:1.0.0'
+    implementation 'com.baoyz.swipemenulistview:library:1.2.1'
+    implementation 'com.neovisionaries:nv-websocket-client:1.9'
+    implementation 'commons-codec:commons-codec:1.4'
+    implementation 'commons-io:commons-io:2.5'
+    implementation 'com.google.guava:guava:16.0.1'
+    implementation 'org.apache.commons:commons-lang3:3.3'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.55'
+    implementation 'com.lambdaworks:scrypt:1.4.0'
+    implementation 'net.i2p.android.ext:floatingactionbutton:1.9.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation('com.google.zxing:core:3.3.0') {
         transitive = true
     }
+
+    /**
+     * Picasso - http://square.github.io/picasso/
+     */
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    /**
+     * Dagger 2 - https://github.com/google/dagger
+     */
+    implementation 'com.google.dagger:dagger-android:2.15'
+    implementation 'com.google.dagger:dagger-android-support:2.15' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
+
+    /**
+     * Butterknife http://jakewharton.github.io/butterknife/
+     */
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    /**
+     * Otto EventBus - http://square.github.io/otto/
+     */
+    implementation 'com.squareup:otto:1.3.8'
 }
