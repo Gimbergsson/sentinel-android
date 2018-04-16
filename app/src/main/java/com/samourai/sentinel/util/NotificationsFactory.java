@@ -32,7 +32,7 @@ public class NotificationsFactory {
     }
 
     public void setNotification(String title, String marquee, String text, int drawable, Class cls, int id) {
-        mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        /*mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         final Notification notifyDetails = new Notification(drawable, marquee, System.currentTimeMillis());
 
         Intent notifyIntent = new Intent(context, cls);
@@ -41,6 +41,6 @@ public class NotificationsFactory {
         notifyDetails.flags |= Notification.FLAG_AUTO_CANCEL;
         notifyDetails.number = 0;
 //        notifyDetails.sound = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.alert);
-        mNotificationManager.notify(id, notifyDetails);
+        mNotificationManager.notify(id, notifyDetails);*/
     }
 }

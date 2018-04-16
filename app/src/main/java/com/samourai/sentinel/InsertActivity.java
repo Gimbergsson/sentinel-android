@@ -1,24 +1,24 @@
 package com.samourai.sentinel;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-//import android.widget.Toast;
 
 import com.dm.zbar.android.scanner.ZBarConstants;
 import com.dm.zbar.android.scanner.ZBarScannerActivity;
 import com.samourai.sentinel.access.AccessFactory;
-import com.samourai.sentinel.util.AppUtil;
 import com.samourai.sentinel.util.FormatsUtil;
 
 import net.sourceforge.zbar.Symbol;
@@ -40,6 +40,8 @@ public class InsertActivity extends Activity {
     public final static int TYPE_SEGWIT_XPUB = 2;
 
     private int storedType = 0;
+
+    private static final int PERMISSION_REQUEST_CAMERA = 700;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,9 +121,8 @@ public class InsertActivity extends Activity {
         }
         else if(resultCode == Activity.RESULT_CANCELED && requestCode == INSERT_BIP49)	{
             Toast.makeText(InsertActivity.this, R.string.xpub_add_ko, Toast.LENGTH_SHORT).show();
-        }
-        else {
-            ;
+        } else {
+            // TODO do stuff here
         }
 
     }
@@ -174,7 +175,29 @@ public class InsertActivity extends Activity {
 
                         dialog.dismiss();
 
-                        doScan();
+                        if (ContextCompat.checkSelfPermission(InsertActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            // Permission is not granted
+                            // Should we show an explanation?
+                            /*if (ActivityCompat.shouldShowRequestPermissionRationale(InsertActivity.this, Manifest.permission.CAMERA)) {
+
+                                // Show an explanation to the user *asynchronously* -- don't block
+                                // this thread waiting for the user's response! After the user
+                                // sees the explanation, try again to request the permission.
+
+                            } else {
+
+                                // No explanation needed; request the permission
+                                ActivityCompat.requestPermissions(InsertActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+
+                                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                                // app-defined int constant. The callback method gets the
+                                // result of the request.
+                            }*/
+                            ActivityCompat.requestPermissions(InsertActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+                        } else {
+                            // Permission has already been granted
+                            doScan();
+                        }
 
                     }
                 }).show();
@@ -185,6 +208,28 @@ public class InsertActivity extends Activity {
         Intent intent = new Intent(InsertActivity.this, ZBarScannerActivity.class);
         intent.putExtra(ZBarConstants.SCAN_MODES, new int[]{Symbol.QRCODE});
         startActivityForResult(intent, SCAN_XPUB);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    doScan();
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(InsertActivity.this, "You have denied camera permission", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 
     private void addXPUB(final String xpubStr, final int type) {
